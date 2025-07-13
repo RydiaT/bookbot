@@ -1,4 +1,7 @@
+import sys
+
 from stats import word_count, letter_count, get_rankings
+from sys import argv
 
 def get_book_text(file):
     with open(file) as f:
@@ -14,20 +17,24 @@ def disp_letters(raw_ranks):
     return out
 
 def main():
-    frank = get_book_text("books/frankenstein.txt")
+    if len(argv) < 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
 
-    frank_letters = letter_count(frank)
+    raw_book = get_book_text(argv[1])
 
-    frank_rank = get_rankings(frank_letters)
+    book_letters = letter_count(raw_book)
+
+    letter_rank = get_rankings(book_letters)
 
     print("============ BOOKBOT ============")
-    print("Analyzing book found at books/frankenstein.txt...")
+    print(f"Analyzing book found at {argv[1]}...")
 
     print("----------- Word Count ----------")
-    print(f"Found {word_count(frank)} total words.")
+    print(f"Found {word_count(raw_book)} total words.")
 
     print("--------- Character Count -------")
-    print(disp_letters(frank_rank))
+    print(disp_letters(letter_rank))
 
     print("============= END ===============")
 
